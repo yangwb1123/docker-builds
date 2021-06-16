@@ -4,9 +4,9 @@
 # @Author: yanbuw1911
 # @Date: 2021-06-11 14:45:32
 # @LastEditors: yanbuw1911
-# @LastEditTime: 2021-06-12 16:07:19
+# @LastEditTime: 2021-06-15 15:54:59
 # @Description: Do not edit
-# @FilePath: /workspace/docker/build/php/mexts7.4.16-alpine3.13/exts/install.sh
+# @FilePath: /workspace/docker/build/php/mexts7.4.20-alpine3.13/exts/install.sh
 ###
 
 # configure: error: C compiler cannot create executables ==> useless
@@ -131,6 +131,13 @@ sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories &&
     cd ${DOCKER_PHP_EXT_DIR}/oci8 &&
     docker-php-ext-configure oci8 --with-oci8=shared,instantclient,$LD_LIBRARY_PATH &&
     docker-php-ext-install -j$(nproc) oci8
+
+cd /tmp && wget https://github.com/emcrisostomo/fswatch/releases/download/1.14.0/fswatch-1.14.0.tar.gz &&
+    tar -xf fswatch-1.14.0.tar.gz &&
+    cd fswatch-1.14.0/ &&
+    ./configure &&
+    make &&
+    make install
 
 curl -sS https://getcomposer.org/installer | php
 mv composer.phar /usr/local/bin/composer
