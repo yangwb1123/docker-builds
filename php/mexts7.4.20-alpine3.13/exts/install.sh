@@ -4,7 +4,7 @@
 # @Author: yanbuw1911
 # @Date: 2021-06-11 14:45:32
 # @LastEditors: yanbuw1911
-# @LastEditTime: 2021-06-15 15:54:59
+# @LastEditTime: 2021-06-18 17:14:22
 # @Description: Do not edit
 # @FilePath: /workspace/docker/build/php/mexts7.4.20-alpine3.13/exts/install.sh
 ###
@@ -123,22 +123,20 @@ sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories &&
     cd ${DOCKER_PHP_EXT_DIR}/pdo_odbc &&
     docker-php-ext-configure pdo_odbc --with-pdo-odbc=unixODBC,/usr/,share,instantclient,$LD_LIBRARY_PATH &&
     docker-php-ext-install -j$(nproc) pdo_odbc &&
-    pecl install imagick && echo "extension=imagick.so" >>/usr/local/etc/php/conf.d/ext-imagick.ini &&
-    pecl install msgpack && echo "extension=msgpack.so" >>/usr/local/etc/php/conf.d/ext-msgpack.ini &&
-    pecl install event &&
+    # pecl install imagick && echo "extension=imagick.so" >>/usr/local/etc/php/conf.d/ext-imagick.ini &&
+    # pecl install msgpack && echo "extension=msgpack.so" >>/usr/local/etc/php/conf.d/ext-msgpack.ini &&
+    # pecl install event &&
     echo "extension=event.so" >>/usr/local/etc/php/conf.d/docker-php-ext.sockets.ini &&
     rm -f /usr/local/etc/php/conf.d/docker-php-ext-event.ini &&
     cd ${DOCKER_PHP_EXT_DIR}/oci8 &&
     docker-php-ext-configure oci8 --with-oci8=shared,instantclient,$LD_LIBRARY_PATH &&
     docker-php-ext-install -j$(nproc) oci8
 
-cd /tmp && wget https://github.com/emcrisostomo/fswatch/releases/download/1.14.0/fswatch-1.14.0.tar.gz &&
-    tar -xf fswatch-1.14.0.tar.gz &&
+cd /tmp && tar -xf fswatch-1.14.0.tar.gz &&
     cd fswatch-1.14.0/ &&
     ./configure &&
     make &&
     make install
 
-curl -sS https://getcomposer.org/installer | php
-mv composer.phar /usr/local/bin/composer
+mv /tmp/composer /usr/local/bin
 composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
